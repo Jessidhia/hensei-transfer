@@ -101,6 +101,7 @@ export interface WeaponExport {
     lvl: number
   }
   ax?: { id: string; val: string }[]
+  /** These are **skill** ids, not key ids */
   keys?: [string, string?, string?]
 }
 
