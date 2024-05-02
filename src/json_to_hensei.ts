@@ -369,8 +369,6 @@ interface HenseiCommonData {
   name: Record<'en' | 'ja', string>
 }
 
-// deno-lint-ignore no-empty-interface
 interface HenseiJobSkill extends HenseiCommonData {}
 
-// deno-lint-ignore no-empty-interface
 interface HenseiJob extends HenseiCommonData {}

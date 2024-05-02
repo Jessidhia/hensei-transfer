@@ -1,10 +1,11 @@
 {
   "tasks": {
     "bundle": "deno run --allow-write=./bookmarklets,./version.json --allow-env --allow-read --allow-run bundle.ts",
-    "release": "deno task bundle release"
+    "release": "deno task bundle --release"
   },
   "fmt": { "semiColons": false, "singleQuote": true },
   "compilerOptions": {
+    "strict": true,
     "lib": [
       "deno.window",
       "dom",

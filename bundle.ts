@@ -1,8 +1,14 @@
 import * as esbuild from 'https://deno.land/x/esbuild@v0.20.2/mod.js'
+import { parseArgs } from 'https://deno.land/x/std@0.224.0/cli/mod.ts'
 import denoJson from './deno.json' with { type: 'json' }
 
+const args = parseArgs(Deno.args, {
+  boolean: ['release', 'encode'],
+  negatable: ['release', 'encode'],
+  default: { encode: true },
+})
 try {
-  if (Deno.args.includes('release')) {
+  if (args.release) {
     await bumpVersion()
   }
   await Promise.all([
@@ -41,15 +47,24 @@ async function build(entrypoint: string | string[]) {
 
   const enc = new TextEncoder()
 
-  await Promise.all(result.outputFiles.map(async ({ path, contents }) => {
-    // when will libraries start supporting Symbol.asyncDispose...
-    let file: Deno.FsFile | undefined
-    try {
-      file = await Deno.create(path)
+  await Promise.all(result.outputFiles.map(async ({ path, text, contents }) => {
+    using file = await Deno.create(path)
+    if (args.encode) {
       await file.write(enc.encode('javascript:'))
+      await file.write(
+        enc.encode(
+          encodeURI(
+            // minifier makes use of raw newlines inside templates but that won't work on a bookmarklet
+            text.trim().replaceAll('\n', '\\n'),
+          ).replaceAll(
+            // restore javascript:-uri safe characters
+            /%(?:20|22|3C|3E|5B|5C|5D|5E|60|7B|7C|7D)/g,
+            decodeURI,
+          ),
+        ),
+      )
+    } else {
       await file.write(contents)
-    } finally {
-      if (file) file.close()
     }
   }))
 }
