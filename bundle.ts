@@ -3,8 +3,8 @@ import { parseArgs } from 'https://deno.land/x/std@0.224.0/cli/mod.ts'
 import denoJson from './deno.json' with { type: 'json' }
 
 const args = parseArgs(Deno.args, {
-  boolean: ['release', 'encode'],
-  negatable: ['release', 'encode'],
+  boolean: ['release', 'encode', 'debug'],
+  negatable: ['release', 'encode', 'debug'],
   default: { encode: true },
 })
 try {
@@ -33,11 +33,14 @@ async function build(entrypoint: string | string[]) {
     target: ['es2022'],
     entryPoints: Array.isArray(entrypoint) ? entrypoint : [entrypoint],
     bundle: true,
-    minify: true,
+    minify: !args.debug,
+    minifyWhitespace: args.encode,
     supported: { 'inline-script': false },
     legalComments: 'none',
     charset: 'utf8',
     logLevel: 'info',
+    drop: args.debug ? [] : ['debugger'],
+    define: { DEBUG: JSON.stringify(!!args.debug) },
     tsconfigRaw: `{ "compilerOptions": ${
       JSON.stringify(denoJson.compilerOptions)
     } }`,

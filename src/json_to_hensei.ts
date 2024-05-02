@@ -53,13 +53,20 @@ export default async function importHensei() {
       updateJob(),
       updateChars(),
       updateWeapons(),
-      updateSummons(input['friend_summon'], input['summons'], 0),
-      updateSummons(undefined, input['sub_summons'], 5),
+      updateSummons(input.friend_summon, input.summons, 0),
+      updateSummons(undefined, input.sub_summons, 5),
     ])
 
     document.body.style.cursor = ''
     notice.remove()
-    location.assign(`/p/${party.shortcode}`)
+    if (DEBUG) {
+      console.debug(
+        'Would navigate to',
+        new URL(`/p/${party.shortcode}`, location.href).toString(),
+      )
+    } else {
+      location.assign(`/p/${party.shortcode}`)
+    }
   } catch (e) {
     notice.style.color = 'red'
     notice.innerText = 'An error occurred, check browser console'

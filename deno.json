@@ -9,7 +9,8 @@
     "lib": [
       "deno.window",
       "dom",
-      "dom.iterable"
+      "dom.iterable",
+      "src/globals.d.ts"
     ]
   },
   "exclude": ["bookmarklets/", "./bookmark_*.js"]

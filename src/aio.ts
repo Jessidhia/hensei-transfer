@@ -11,10 +11,12 @@ assertVersion().then((ok) => {
   if (location.hostname.endsWith('granblue.team')) {
     return importHensei()
   } else if (location.hostname.endsWith('game.granbluefantasy.jp')) {
+    DEBUG && console.debug(exportHensei(getGame()))
     const str = JSON.stringify(exportHensei(getGame()))
     clipboard.write(str)
 
     if (
+      !DEBUG &&
       confirm(
         'Copied team data to clipboard! If you press OK, a new tab in granblue.team will be open now - click the bookmark again on it and paste your data in there.',
       )
