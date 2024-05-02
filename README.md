@@ -32,5 +32,8 @@ https://user-images.githubusercontent.com/1794735/225981630-22a45b8a-f819-46d9-b
   not load properly (eg. "Chika" instead of "Aqours Second-Years")
 - Uncap levels are mostly calculated from the item's current level, an item that
   is uncapped but not leveled will export the wrong uncap level
+- R/SR characters/weapons/summons will not import to granblue.party
 - (wiki-specific) Summon max uncap level is unknown from the party data so
   non-maxed summons may export with the wrong number of empty stars
+- (wiki-specific) Weapon/Character/Summon names will be missing disambiguation
+  annotations, such as `(Summon)` or `(SSR)`
